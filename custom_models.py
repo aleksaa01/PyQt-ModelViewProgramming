@@ -2,6 +2,8 @@ from utils import AppWindow
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QAbstractListModel, Qt
+from PyQt5.QtGui import QPixmap, QIcon, QColor
+
 import sys
 
 
@@ -17,8 +19,22 @@ class LanguagesListModel(QAbstractListModel):
         return len(self._languages)
 
     def data(self, index, role):
+        if role == Qt.ToolTipRole:
+            return 'Programming language: ' + str(self._languages[index.row()])
+
         if role == Qt.DisplayRole:
-            return 'Display data'
+            return self._languages[index.row()]
+
+        if role == Qt.DecorationRole:
+            row = index.row()
+            pixmap = QPixmap(26, 26)
+            hex_color = '#'
+            for offset in range(6):
+                hex_color += str((row + offset * row) % 10)
+            pixmap.fill(QColor(hex_color))
+
+            icon = QIcon(pixmap)
+            return icon
 
     def addData(self, new_data):
         self._languages = new_data
@@ -32,9 +48,9 @@ class LanguagesListModel(QAbstractListModel):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    new_model = LanguagesListModel()
+    language_model = LanguagesListModel()
 
-    app_window = AppWindow(model=new_model)
+    app_window = AppWindow(model=language_model)
     app_window.add_test_widgets()
     app_window.show()
 
