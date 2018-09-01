@@ -14,7 +14,7 @@ class AppWindow():
 
         # Setting data required by model
         if data is None:
-            self._data = ['one', 'two', 'three', 'four', 'five']
+            self._data = ['Python', 'C++', 'Javascript', 'C#', 'Swift']
         else:
             self._data = data
 
