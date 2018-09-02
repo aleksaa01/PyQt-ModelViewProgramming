@@ -10,6 +10,7 @@ import sys
 class LanguagesListModel(QAbstractListModel):
     # Custom model for ListView
     # required methods: rowCount, data
+    # requied methods for making model editable: flags, setData
 
     def __init__(self, languages=None, parent=None):
         super().__init__(parent)
@@ -19,6 +20,9 @@ class LanguagesListModel(QAbstractListModel):
         return len(self._languages)
 
     def data(self, index, role):
+        if role == Qt.EditRole:
+            return self._languages[index.row()]
+
         if role == Qt.ToolTipRole:
             return 'Programming language: ' + str(self._languages[index.row()])
 
@@ -35,6 +39,17 @@ class LanguagesListModel(QAbstractListModel):
 
             icon = QIcon(pixmap)
             return icon
+
+    def flags(self, index):
+        return Qt.ItemIsEditable | Qt.ItemIsEnabled | Qt.ItemIsSelectable
+
+    def setData(self, index, value, role=Qt.EditRole):
+        if role == Qt.EditRole:
+            row = index.row()
+            self._languages[row] = value
+            self.dataChanged.emit(index, index)
+            return True
+        return False
 
     def addData(self, new_data):
         self._languages = new_data
