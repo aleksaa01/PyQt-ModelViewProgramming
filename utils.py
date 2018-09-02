@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QListView, QComboBox
-from PyQt5.QtCore import QStringListModel
+from PyQt5.QtCore import QStringListModel, QModelIndex
 
 
 class AppWindow():
@@ -54,3 +54,21 @@ class AppWindow():
 
     def addWidget(self, widget):
         self.layout.addWidget(widget)
+
+    def insertModelRows(self, position, rows):
+        num_rows = self._model.rowCount()
+        if position < num_rows:
+            self._model.insertRows(position, rows)
+        else:
+            raise IndexError('Index out of range.\n'
+                             'Number of rows is {}, '
+                             'position supplied is {}'.format(num_rows, position))
+
+    def removeModelRows(self, position, rows):
+        num_rows = self._model.rowCount()
+        if position < num_rows:
+            self._model.removeRows(position, rows)
+        else:
+            raise IndexError('Index out of range.\n'
+                             'Number of rows is {}, '
+                             'position supplied is {}'.format(num_rows, position))
