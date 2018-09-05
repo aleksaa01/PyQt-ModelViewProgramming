@@ -5,6 +5,7 @@ from PyQt5.QtCore import QAbstractListModel, Qt, QModelIndex
 from PyQt5.QtGui import QPixmap, QIcon, QColor
 
 import sys
+import random
 
 
 class LanguagesListModel(QAbstractListModel):
@@ -13,6 +14,8 @@ class LanguagesListModel(QAbstractListModel):
     # required methods: rowCount, data
     # requied methods for making model editable: flags, setData
     """
+
+    HEXADECIMAL = '0123456789abcdef'
 
     def __init__(self, languages=None, parent=None):
         super().__init__(parent)
@@ -36,7 +39,9 @@ class LanguagesListModel(QAbstractListModel):
             pixmap = QPixmap(26, 26)
             hex_color = '#'
             for offset in range(6):
-                hex_color += str((row + offset * row) % 10)
+                #hex_color += str((row + offset * row) % 10)
+                random.seed((row + 16) + offset)
+                hex_color += random.choice(self.HEXADECIMAL)
             pixmap.fill(QColor(hex_color))
 
             icon = QIcon(pixmap)
