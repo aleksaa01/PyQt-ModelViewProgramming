@@ -78,6 +78,8 @@ class LanguagesListModel(QAbstractListModel):
         return True
 
     def addData(self, new_data):
+        if type(new_data) != list:
+            raise TypeError('new_data must be list, got {0} instead.'.format(type(new_data)))
         self._languages = new_data
 
     def checkData(self):
