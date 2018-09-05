@@ -4,7 +4,7 @@ from PyQt5.QtCore import QStringListModel, QModelIndex
 
 class AppWindow():
 
-    def __init__(self, data=None, model=None, parent=None):
+    def __init__(self, model=None, parent=None):
         # Get a window and set up required properties
         self.window = QMainWindow(parent)
         self.central_widget = QWidget()
@@ -12,22 +12,22 @@ class AppWindow():
         self.window.setCentralWidget(self.central_widget)
         self.window.setFixedSize(640, 480)
 
-        # Setting data required by model
-        if data is None:
-            self._data = ['Python', 'C++', 'Javascript', 'C#', 'Swift']
-        else:
-            self._data = data
-
         # Setting a model, if model is custom, add default data
         # but only if there is no data in that model
+        dummy_data = ['Python', 'C++', 'Javascript', 'C#', 'Swift']
         if model is None:
-            self._model = QStringListModel(self._data)
+            # if model is None, assume and create QStringListModel
+            self._model = QStringListModel(dummy_data)
         else:
             self._model = model
-            if not self._model.checkData():
-                self._model.addData(self._data)
+            try:
+                if not self._model.checkData():
+                    self._model.addData(dummy_data)
+            except AttributeError:
+                raise Exception('Add method "checkData" that checks if data is present in your model, '
+                                'and method "addData" that adds data to your model.')
 
-        # initialize layout and apply it to central widget
+        # create layout and apply it to central widget
         self.layout = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
@@ -52,8 +52,10 @@ class AppWindow():
     def show(self):
         self.window.show()
 
-    def addWidget(self, widget):
+    def addWidget(self, widget, set_model=False):
         self.layout.addWidget(widget)
+        if set_model:
+            widget.setModel(self._model)
 
     def insertModelRows(self, position, rows):
         num_rows = self._model.rowCount()
