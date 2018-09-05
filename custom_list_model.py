@@ -96,4 +96,5 @@ if __name__ == '__main__':
     app_window.insertModelRows(4, 5)
     app_window.show()
     app_window.removeModelRows(4, 4)
+
     sys.exit(app.exec_())
