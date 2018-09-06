@@ -39,7 +39,6 @@ class LanguagesListModel(QAbstractListModel):
             pixmap = QPixmap(26, 26)
             hex_color = '#'
             for offset in range(6):
-                #hex_color += str((row + offset * row) % 10)
                 random.seed((row + 16) + offset)
                 hex_color += random.choice(self.HEXADECIMAL)
             pixmap.fill(QColor(hex_color))
