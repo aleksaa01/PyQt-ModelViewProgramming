@@ -12,9 +12,10 @@ class LanguagesTableModel(QAbstractTableModel):
 
     HEXADECIMAL = '0123456789abcdef'
 
-    def __init__(self, languages=None, parent=None):
+    def __init__(self, languages=None, headers=None, parent=None):
         super().__init__(parent)
         self._languages = languages if languages else [[]]
+        self._headers = headers if headers else []
 
     def rowCount(self, parent):
         return len(self._languages)
@@ -49,6 +50,22 @@ class LanguagesTableModel(QAbstractTableModel):
             icon = QIcon(pixmap)
             return icon
 
+    def setData(self, index, value, role=Qt.EditRole):
+        if role == Qt.EditRole:
+            row = index.row()
+            column = index.column()
+            self._languages[row][column] = value
+            self.dataChanged.emit(index, index)
+            return True
+        return False
+
+    def headerData(self, section, orientation, role):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return self._headers[section]
+            else:
+                return 'Popularity rank {}'.format(section)
+
     def addData(self, new_data):
         if type(new_data) != list:
             raise TypeError('new_data must be a list, got {0} instead.'.format(type(new_data)))
@@ -67,12 +84,14 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     language_data = [
-        ['C', 'C++', 'Java', 'C#'],
-        ['Python', 'Ruby', 'Haskel', 'Go'],
-        ['Rust', 'Javascript', 'PHP', 'Lisp'],
-        ['Perl', 'Swift', 'Kotlin', 'Objective-C']
+        ['C', 'Python', 'Rust', 'Perl'],
+        ['C++', 'Ruby', 'Javascript', 'Swift'],
+        ['Java', 'Haskel', 'PHP', 'Kotlin'],
+        ['C#', 'Go', 'Lisp', 'Objective-C']
     ]
-    language_model = LanguagesTableModel(language_data)
+    headers = ['System lang', 'Scripting lang', 'Popular lang', 'Android lang']
+
+    language_model = LanguagesTableModel(language_data, headers)
 
     app_window = AppWindow(model=language_model)
 
