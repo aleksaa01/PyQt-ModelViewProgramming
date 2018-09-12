@@ -58,8 +58,8 @@ class AppWindow():
             widget.setModel(self._model)
 
     def insertModelRows(self, position, rows):
-        num_rows = self._model.rowCount()
-        if position < num_rows:
+        num_rows = self._model.rowCount(None)
+        if position <= num_rows:
             self._model.insertRows(position, rows)
         else:
             raise IndexError('Index out of range.\n'
@@ -67,8 +67,8 @@ class AppWindow():
                              'position supplied is {}'.format(num_rows, position))
 
     def removeModelRows(self, position, rows):
-        num_rows = self._model.rowCount()
-        if position < num_rows:
+        num_rows = self._model.rowCount(None)
+        if position <= num_rows:
             self._model.removeRows(position, rows)
         else:
             raise IndexError('Index out of range.\n'
