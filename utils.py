@@ -74,3 +74,21 @@ class AppWindow():
             raise IndexError('Index out of range.\n'
                              'Number of rows is {}, '
                              'position supplied is {}'.format(num_rows, position))
+
+    def insertModelColumns(self, position, columns):
+        num_columns = self._model.columnCount(None)
+        if position <= num_columns:
+            self._model.insertColumns(position, columns)
+        else:
+            raise IndexError('Index out of range.\n'
+                             'Number of columns is {}, '
+                             'position supplied is {}'.format(num_columns, position))
+
+    def removeModelColumns(self, position, columns):
+        num_columns = self._model.columnCount(None)
+        if position <= num_columns:
+            self._model.removeColumns(position, columns)
+        else:
+            raise IndexError('Index out of range.\n'
+                             'Number of columns is {}, '
+                             'position supplied is {}'.format(num_columns, position))
