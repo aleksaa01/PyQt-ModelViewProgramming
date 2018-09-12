@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QListView, QComboBox
-from PyQt5.QtCore import QStringListModel, QModelIndex
+from PyQt5.QtCore import QStringListModel
 
 
 class AppWindow():
