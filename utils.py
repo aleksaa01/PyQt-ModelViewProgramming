@@ -68,12 +68,13 @@ class AppWindow():
 
     def removeModelRows(self, position, rows):
         num_rows = self._model.rowCount(None)
-        if position <= num_rows:
+        if position <= num_rows and position + rows <= num_rows:
             self._model.removeRows(position, rows)
         else:
             raise IndexError('Index out of range.\n'
-                             'Number of rows is {}, '
-                             'position supplied is {}'.format(num_rows, position))
+                             'Rows to delete: {}\n'
+                             'Total number of rows: {}\n'
+                             'Starting row: {}'.format(rows, num_rows, position))
 
     def insertModelColumns(self, position, columns):
         num_columns = self._model.columnCount(None)
@@ -86,9 +87,10 @@ class AppWindow():
 
     def removeModelColumns(self, position, columns):
         num_columns = self._model.columnCount(None)
-        if position <= num_columns:
+        if position <= num_columns and position + columns <= num_columns:
             self._model.removeColumns(position, columns)
         else:
             raise IndexError('Index out of range.\n'
-                             'Number of columns is {}, '
-                             'position supplied is {}'.format(num_columns, position))
+                             'Columns to delete: {}\n'
+                             'Total number of columns: {}\n'
+                             'Starting column: {}'.format(columns, num_columns, position))
